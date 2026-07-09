@@ -1,0 +1,97 @@
+import type { CanonicalPayload } from '@/types/balancer';
+
+export const SAMPLE_DATA: CanonicalPayload = {
+  schema_version: '1.0.0',
+  school: {
+    name: 'Dexter Junior Academy',
+    filled_by: 'Admin User',
+    filled_at: '2026-07-08',
+  },
+  policy: {
+    generalists_grade_scope: 'explicit_only',
+    overload_policy: 'block',
+    ambiguous_data_policy: 'use_default_and_warn',
+    specialist_scope_lock: true,
+  },
+  subjects: [
+    {
+      subject_code: 'MATH',
+      subject_name: 'Mathematics',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [5, 5, 5],
+    },
+    {
+      subject_code: 'ENG',
+      subject_name: 'English',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [5, 5, 5],
+    },
+    {
+      subject_code: 'KIS',
+      subject_name: 'Kiswahili',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [4, 4, 4],
+    },
+    {
+      subject_code: 'SCI',
+      subject_name: 'Integrated Science',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [4, 4, 4],
+      requires_lab: true,
+    },
+    {
+      subject_code: 'SOC',
+      subject_name: 'Social Studies',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [3, 3, 3],
+    },
+    {
+      subject_code: 'CRE',
+      subject_name: 'CRE',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [2, 2, 2],
+    },
+    {
+      subject_code: 'AGR',
+      subject_name: 'Agriculture',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [2, 2, 2],
+    },
+    {
+      subject_code: 'PE',
+      subject_name: 'Physical Education',
+      grade_levels: ['G7', 'G8', 'G9'],
+      periods_per_week: [2, 2, 2],
+    },
+  ],
+  teachers: [
+    { teacher_id: 'T1', name: 'Mr. Otieno', max_periods_week: 24, specialist: false, confidence: 0.95 },
+    { teacher_id: 'T2', name: 'Ms. Wanjiku', max_periods_week: 24, specialist: false, confidence: 0.90 },
+    { teacher_id: 'T3', name: 'Mr. Kamau', max_periods_week: 24, specialist: false, confidence: 0.88 },
+    { teacher_id: 'T4', name: 'Ms. Achieng', max_periods_week: 24, specialist: false, confidence: 0.92 },
+    { teacher_id: 'T5', name: 'Mr. Kimani', max_periods_week: 24, specialist: false, confidence: 0.85 },
+    { teacher_id: 'T6', name: 'Ms. Njeri', max_periods_week: 24, specialist: false, confidence: 0.90 },
+    { teacher_id: 'T7', name: 'Mr. Mwangi', max_periods_week: 24, specialist: false, confidence: 0.87 },
+    { teacher_id: 'T8', name: 'Ms. Cherono', max_periods_week: 20, specialist: false, confidence: 0.80 },
+  ],
+  capabilities: [
+    { teacher_id: 'T1', subject_code: 'MATH', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.95 },
+    { teacher_id: 'T1', subject_code: 'SCI', grades_can_teach: ['G8', 'G9'], confidence: 0.80 },
+    { teacher_id: 'T2', subject_code: 'ENG', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.90 },
+    { teacher_id: 'T3', subject_code: 'KIS', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.85 },
+    { teacher_id: 'T3', subject_code: 'SOC', grades_can_teach: ['G7', 'G8'], confidence: 0.70 },
+    { teacher_id: 'T4', subject_code: 'SCI', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.90 },
+    { teacher_id: 'T5', subject_code: 'MATH', grades_can_teach: ['G7', 'G8'], confidence: 0.85 },
+    { teacher_id: 'T6', subject_code: 'ENG', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.90 },
+    { teacher_id: 'T6', subject_code: 'CRE', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.70 },
+    { teacher_id: 'T7', subject_code: 'SOC', grades_can_teach: ['G8', 'G9'], confidence: 0.80 },
+    { teacher_id: 'T8', subject_code: 'AGR', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.80 },
+    { teacher_id: 'T8', subject_code: 'PE', grades_can_teach: ['G7', 'G8', 'G9'], confidence: 0.75 },
+  ],
+  preferences: [
+    { teacher_id: 'T1', subject_code: 'MATH', grades: ['G7', 'G8', 'G9'], priority: 1 },
+    { teacher_id: 'T2', subject_code: 'ENG', grades: ['G7', 'G8', 'G9'], priority: 1 },
+    { teacher_id: 'T3', subject_code: 'KIS', grades: ['G7', 'G8', 'G9'], priority: 1 },
+    { teacher_id: 'T4', subject_code: 'SCI', grades: ['G7', 'G8', 'G9'], priority: 1 },
+  ],
+};
