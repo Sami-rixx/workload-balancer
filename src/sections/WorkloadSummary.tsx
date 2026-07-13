@@ -10,82 +10,124 @@ interface Props {
 function StatusIcon({ status }: { status: WorkloadEntry['status'] }) {
   switch (status) {
     case 'FULL':
-      return <UserCheck className="w-3.5 h-3.5 text-emerald-400" />;
+      return <UserCheck size={14} style={{ color: 'var(--accent-pass)' }} />;
     case 'OVERLOAD':
-      return <AlertTriangle className="w-3.5 h-3.5 text-red-400" />;
+      return <AlertTriangle size={14} style={{ color: 'var(--accent-fail)' }} />;
     case 'UNDERLOAD':
-      return <TrendingUp className="w-3.5 h-3.5 text-amber-400" />;
+      return <TrendingUp size={14} style={{ color: 'var(--accent-warn)' }} />;
   }
 }
 
 function StatusLabel({ status }: { status: WorkloadEntry['status'] }) {
   switch (status) {
     case 'FULL':
-      return <span className="text-emerald-400 font-medium">Full</span>;
+      return <span className="font-mono text-xs" style={{ color: 'var(--accent-pass)' }}>Full</span>;
     case 'OVERLOAD':
-      return <span className="text-red-400 font-medium">Overload</span>;
+      return <span className="font-mono text-xs" style={{ color: 'var(--accent-fail)' }}>Overload</span>;
     case 'UNDERLOAD':
-      return <span className="text-amber-400 font-medium">Underload</span>;
+      return <span className="font-mono text-xs" style={{ color: 'var(--accent-warn)' }}>Underload</span>;
+  }
+}
+
+function getProgressColor(status: WorkloadEntry['status']): string {
+  switch (status) {
+    case 'FULL':
+      return 'var(--accent-pass)';
+    case 'OVERLOAD':
+      return 'var(--accent-fail)';
+    case 'UNDERLOAD':
+      return 'var(--accent-warn)';
   }
 }
 
 export default function WorkloadSummary({ workload }: Props) {
   if (workload.length === 0) {
     return (
-      <div className="text-center py-8 text-slate-600 text-sm">
-        Run the balancer to see workload distribution
+      <div className="flex flex-col items-center justify-center py-10 gap-3">
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center"
+          style={{ background: 'var(--bg-surface-raised)', border: '1px solid var(--border-subtle)' }}
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="var(--text-muted)" strokeWidth="1.5" />
+            <path d="M10 6v5M10 13.5v.5" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </div>
+        <div className="text-center">
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            No workload data yet
+          </p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+            Run the balancer to see teacher workload distribution
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <ScrollArea className="max-h-[280px]">
+    <div className="flex flex-col gap-2">
+      <ScrollArea className="max-h-[300px]">
         <div className="flex flex-col gap-2">
           {workload.map((w) => {
             const pct = Math.min(100, Math.max(0, (w.used / w.max) * 100));
             const isOverloaded = w.used > w.max;
+            const barColor = getProgressColor(w.status);
 
             return (
               <div
                 key={w.teacher_id}
-                className="flex flex-col gap-1.5 p-2.5 rounded-lg bg-slate-800/30 border border-slate-800/50"
+                className="panel-raised p-3 flex flex-col gap-2 fade-in-up"
               >
+                {/* Top row: name + status */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     <StatusIcon status={w.status} />
-                    <span className="text-sm font-medium text-slate-200">
+                    <span className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>
                       {w.teacher_name}
                     </span>
-                    <span className="text-[10px] text-slate-500 font-mono">{w.teacher_id}</span>
+                    <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--text-muted)' }}>
+                      {w.teacher_id}
+                    </span>
                   </div>
                   <StatusLabel status={w.status} />
                 </div>
 
+                {/* Progress bar */}
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <Progress
-                      value={pct}
-                      className="h-1.5 bg-slate-800"
-                    />
+                    <div
+                      className="h-1.5 rounded-full overflow-hidden"
+                      style={{ background: 'var(--border-subtle)' }}
+                    >
+                      <div
+                        className="h-full rounded-full transition-all duration-700 ease-out"
+                        style={{
+                          width: `${pct}%`,
+                          background: barColor,
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-[11px] tabular-nums">
+                  <div className="flex items-center gap-1 font-mono text-xs tabular-nums flex-shrink-0">
                     <span
-                      className={`font-semibold ${isOverloaded ? 'text-red-400' : 'text-slate-300'}`}
+                      className="font-semibold"
+                      style={{ color: isOverloaded ? 'var(--accent-fail)' : 'var(--text-primary)' }}
                     >
                       {w.used}
                     </span>
-                    <span className="text-slate-600">/</span>
-                    <span className="text-slate-400">{w.max}</span>
+                    <span style={{ color: 'var(--text-muted)' }}>/</span>
+                    <span style={{ color: 'var(--text-secondary)' }}>{w.max}</span>
                   </div>
                 </div>
 
+                {/* Remaining hint */}
                 {w.remaining !== 0 && (
-                  <div className="text-[10px] text-slate-500">
+                  <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
                     {w.remaining > 0
                       ? `${w.remaining} periods remaining`
                       : `${Math.abs(w.remaining)} periods over capacity`}
-                  </div>
+                  </span>
                 )}
               </div>
             );
