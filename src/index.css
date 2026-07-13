@@ -1,73 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 222 47% 4%;
-    --foreground: 210 20% 96%;
-    --card: 222 30% 7%;
-    --card-foreground: 210 20% 96%;
-    --popover: 222 30% 7%;
-    --popover-foreground: 210 20% 96%;
-    --primary: 43 96% 56%;
-    --primary-foreground: 222 47% 4%;
-    --secondary: 217 19% 17%;
-    --secondary-foreground: 210 20% 96%;
-    --muted: 217 19% 17%;
-    --muted-foreground: 215 14% 45%;
-    --accent: 217 19% 17%;
-    --accent-foreground: 210 20% 96%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 217 19% 15%;
-    --input: 217 19% 15%;
-    --ring: 43 96% 56%;
-    --radius: 0.625rem;
-    --sidebar-background: 222 30% 7%;
-    --sidebar-foreground: 210 20% 96%;
-    --sidebar-primary: 43 96% 56%;
-    --sidebar-primary-foreground: 222 47% 4%;
-    --sidebar-accent: 217 19% 17%;
-    --sidebar-accent-foreground: 210 20% 96%;
-    --sidebar-border: 217 19% 15%;
-    --sidebar-ring: 43 96% 56%;
-  }
-}
+    /* === Möbius Muse Brand Palette === */
+    --muse-blue: #0A2463;
+    --brass: #C9A96E;
+    --brass-bright: #D4B87A;
+    --brass-dim: rgba(201, 169, 110, 0.15);
 
-@layer base {
+    --ink: #060B1A;
+    --bg-canvas: #060B1A;
+    --bg-surface: #0A1025;
+    --bg-surface-raised: #101838;
+    --bg-input: #070C1A;
+
+    --border-subtle: #1A2550;
+    --border-grid: rgba(26, 37, 80, 0.35);
+
+    --text-primary: #E8E4DC;
+    --text-secondary: #8B92A8;
+    --text-muted: #4A5270;
+
+    --accent-pass: #6BA88A;
+    --accent-warn: #C9A96E;
+    --accent-fail: #B86B6B;
+    --accent-slate: #5A7A96;
+    --accent-teal: #4A8B9B;
+
+    --radius-sm: 3px;
+    --radius-md: 6px;
+  }
+
   * {
-    @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-muted) var(--border-subtle);
   }
-  body {
-    @apply bg-slate-950 text-slate-200;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
 
-/* Scrollbar styling */
-@layer utilities {
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
+
+  *::-webkit-scrollbar-track {
+    background: var(--border-subtle);
+    border-radius: 2px;
   }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(100, 116, 139, 0.3);
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
     border-radius: 3px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 116, 139, 0.5);
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
-  /* Progress bar override for workload */
-  [role="progressbar"] > div {
-    background: linear-gradient(90deg, rgb(251 191 36), rgb(245 158 11)) !important;
-    border-radius: 9999px;
-    transition: width 0.5s ease;
+  /* Accessible focus states */
+  *:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer components {
+  /* === Typography === */
+  .font-display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+  }
+
+  .font-body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  /* Wide-tracked caps for labels/tags */
+  .label-caps {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* === Blueprint Grid Background === */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, var(--border-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 70%);
+  }
+
+  /* === Panel Container === */
+  .panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  .panel-raised {
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+
+  /* === Animations === */
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .spin-slow {
+    animation: spin-slow 2.5s linear infinite;
+  }
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in-up {
+    animation: fade-in-up 450ms ease-out forwards;
+  }
+
+  @keyframes ring-fill {
+    from { stroke-dashoffset: var(--ring-circumference); }
+    to { stroke-dashoffset: var(--ring-offset); }
+  }
+
+  .ring-animate {
+    animation: ring-fill 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes flow-pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  .flow-pulse {
+    animation: flow-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes sweep {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
+  }
+
+  .sweep-bar {
+    animation: sweep 1.8s ease-in-out infinite;
+  }
+
+  /* === Confidence Ring === */
+  .confidence-ring-bg {
+    stroke: var(--border-subtle);
+    fill: none;
+  }
+
+  .confidence-ring-fill {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* === Touch targets === */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* === Shadcn overrides for brand palette === */
+  .shadcn-btn-primary {
+    background: var(--brass) !important;
+    color: var(--ink) !important;
+  }
+
+  .shadcn-btn-primary:hover {
+    background: var(--brass-bright) !important;
   }
 }
