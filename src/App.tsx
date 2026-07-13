@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { BarChart3, CheckCircle2, AlertTriangle, Users, Table2, Scale } from 'lucide-react';
+import { BarChart3, CheckCircle2, AlertTriangle, Users, Table2 } from 'lucide-react';
 import JsonEditor from '@/sections/JsonEditor';
 import BalancerPipeline from '@/sections/BalancerPipeline';
 import AssignmentSheet from '@/sections/AssignmentSheet';

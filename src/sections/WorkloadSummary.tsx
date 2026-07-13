@@ -1,6 +1,5 @@
 import type { WorkloadEntry } from '@/types/balancer';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Progress } from '@/components/ui/progress';
 import { UserCheck, AlertTriangle, TrendingUp } from 'lucide-react';
 
 interface Props {
