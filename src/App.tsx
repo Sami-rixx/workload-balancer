@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { Table2, Users, AlertTriangle, CheckCircle2, BarChart3, Scale } from 'lucide-react';
+import { BarChart3, CheckCircle2, AlertTriangle, Users, Table2, Scale } from 'lucide-react';
 import JsonEditor from '@/sections/JsonEditor';
 import BalancerPipeline from '@/sections/BalancerPipeline';
 import AssignmentSheet from '@/sections/AssignmentSheet';
@@ -65,54 +65,116 @@ export default function App() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col bg-slate-950 text-slate-200">
-      {/* Header */}
-      <header className="flex-shrink-0 flex items-center justify-between px-5 h-14 bg-slate-900 border-b border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center">
-            <Scale className="w-4.5 h-4.5 text-slate-950" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold tracking-tight text-slate-100">
+    <div
+      className="min-h-screen flex flex-col relative"
+      style={{ background: 'var(--bg-canvas)' }}
+    >
+      {/* Blueprint grid overlay */}
+      <div
+        className="fixed inset-0 blueprint-grid pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+
+      {/* === HEADER === */}
+      <header
+        className="relative flex-shrink-0 flex items-center justify-between px-4 sm:px-6 h-14"
+        style={{
+          background: 'var(--bg-surface)',
+          borderBottom: '1px solid var(--border-subtle)',
+          zIndex: 10,
+        }}
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          {/* Möbius strip logo */}
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" className="flex-shrink-0">
+            <path
+              d="M16 4C16 4 8 8 8 16C8 24 16 28 16 28C16 28 24 24 24 16C24 8 16 4 16 4Z"
+              stroke="var(--brass)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="rgba(201,169,110,0.08)"
+            />
+            <path
+              d="M16 28C16 28 12 20 12 16C12 12 16 4 16 4"
+              stroke="var(--brass)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+              opacity="0.5"
+            />
+            <circle cx="16" cy="16" r="3" fill="var(--brass)" opacity="0.35" />
+          </svg>
+          <div className="flex items-baseline gap-2 min-w-0">
+            <span
+              className="font-display text-sm sm:text-base font-semibold tracking-wide truncate"
+              style={{ color: 'var(--text-primary)', letterSpacing: '0.02em' }}
+            >
               Blueprint Workload Balancer
             </span>
-            <span className="text-[10px] text-slate-500 leading-none">
-              Tool 1 of 2 — Möbius Muse Timetable System
+            <span
+              className="hidden sm:inline font-mono text-xs flex-shrink-0"
+              style={{ color: 'var(--text-muted)' }}
+            >
+              v1.0
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center gap-3 flex-shrink-0">
           {report && (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 text-xs">
+            <div
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm"
+              style={{ background: 'var(--bg-surface-raised)', border: '1px solid var(--border-subtle)' }}
+            >
               {report.status === 'BALANCED' ? (
                 <>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400 font-medium">Balanced</span>
+                  <CheckCircle2 size={14} style={{ color: 'var(--accent-pass)' }} />
+                  <span className="text-xs font-medium hidden sm:inline" style={{ color: 'var(--accent-pass)' }}>
+                    Balanced
+                  </span>
                 </>
               ) : (
                 <>
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="text-amber-400 font-medium">Imbalanced</span>
+                  <AlertTriangle size={14} style={{ color: 'var(--accent-warn)' }} />
+                  <span className="text-xs font-medium hidden sm:inline" style={{ color: 'var(--accent-warn)' }}>
+                    Imbalanced
+                  </span>
                 </>
               )}
             </div>
           )}
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] text-slate-500 bg-slate-800/50">
-            <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-            v1.0
+          <div
+            className="flex items-center gap-1.5 px-2 py-1 rounded-sm"
+            style={{ background: 'var(--bg-surface-raised)' }}
+          >
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--brass)' }} />
+            <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>
+              {report ? `${(report.confidence * 100).toFixed(0)}%` : 'Ready'}
+            </span>
           </div>
         </div>
       </header>
 
-      {/* Pipeline indicator */}
-      <div className="flex-shrink-0 px-5 py-3 bg-slate-900/50 border-b border-slate-800">
+      {/* === PIPELINE INDICATOR === */}
+      <div
+        className="relative flex-shrink-0 px-4 sm:px-6 py-3"
+        style={{
+          background: 'var(--bg-surface)',
+          borderBottom: '1px solid var(--border-subtle)',
+          zIndex: 5,
+        }}
+      >
         <BalancerPipeline step={step} />
       </div>
 
-      {/* Main content */}
-      <main className="flex-1 flex gap-4 p-4 overflow-hidden">
+      {/* === MAIN CONTENT === */}
+      <main
+        className="relative flex-1 flex flex-col lg:flex-row gap-3 sm:gap-4 p-3 sm:p-4 overflow-auto"
+        style={{ zIndex: 1 }}
+      >
         {/* Left: JSON Input */}
-        <div className="flex-1 min-w-0 max-w-[45%] bg-slate-900 rounded-xl border border-slate-800 p-4 flex flex-col">
+        <div className="w-full lg:flex-1 lg:min-w-0 lg:max-w-[45%]">
           <JsonEditor
             value={jsonValue}
             onChange={setJsonValue}
@@ -125,76 +187,91 @@ export default function App() {
         </div>
 
         {/* Right: Results */}
-        <div className="flex-1 min-w-0 flex flex-col gap-4 overflow-hidden max-w-[55%]">
+        <div className="w-full lg:flex-1 lg:min-w-0 flex flex-col gap-3 sm:gap-4">
           {/* Stats Row */}
           {report && (
-            <div className="flex-shrink-0 grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
               <StatCard
-                icon={<BarChart3 className="w-4 h-4" />}
+                icon={<BarChart3 size={16} />}
                 label="Demand"
                 value={`${report.total_demand}`}
                 sub={`Supply: ${report.total_supply}`}
-                accent="text-sky-400"
+                accent="var(--accent-slate)"
               />
               <StatCard
-                icon={<CheckCircle2 className="w-4 h-4" />}
+                icon={<CheckCircle2 size={16} />}
                 label="Assigned"
                 value={`${report.total_assigned}`}
                 sub={`of ${report.total_demand} periods`}
-                accent="text-emerald-400"
+                accent="var(--accent-pass)"
               />
               <StatCard
-                icon={<AlertTriangle className="w-4 h-4" />}
+                icon={<AlertTriangle size={16} />}
                 label="Shortfall"
                 value={`${report.total_shortfall}`}
                 sub={report.total_shortfall > 0 ? 'needs attention' : 'none'}
-                accent={report.total_shortfall > 0 ? 'text-red-400' : 'text-emerald-400'}
+                accent={report.total_shortfall > 0 ? 'var(--accent-fail)' : 'var(--accent-pass)'}
               />
               <StatCard
-                icon={<Users className="w-4 h-4" />}
+                icon={<Users size={16} />}
                 label="Overloads"
                 value={`${report.overload_count}`}
                 sub={report.overload_count > 0 ? 'capacity exceeded' : 'all clear'}
-                accent={report.overload_count > 0 ? 'text-amber-400' : 'text-emerald-400'}
+                accent={report.overload_count > 0 ? 'var(--accent-warn)' : 'var(--accent-pass)'}
               />
             </div>
           )}
 
-          {/* Results content */}
-          <div className="flex-1 overflow-y-auto min-h-0 flex flex-col gap-4">
+          {/* Results panels */}
+          <div className="flex flex-col gap-3 sm:gap-4">
             {/* Assignment Sheet */}
-            <div className="bg-slate-900 rounded-xl border border-slate-800 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Table2 className="w-4 h-4 text-amber-500" />
-                <h3 className="text-sm font-semibold text-slate-200">Assignment Sheet</h3>
+            <div className="panel">
+              <div
+                className="flex items-center gap-2 px-3 sm:px-4 py-3"
+                style={{ borderBottom: '1px solid var(--border-subtle)' }}
+              >
+                <Table2 size={14} style={{ color: 'var(--brass)' }} />
+                <span className="label-caps">Assignment Sheet</span>
                 {report && (
-                  <span className="text-[10px] text-slate-500 ml-auto">
-                    Confidence: {(report.confidence * 100).toFixed(1)}%
+                  <span className="font-mono text-xs ml-auto" style={{ color: 'var(--text-muted)' }}>
+                    {report.assignments.length} rows
                   </span>
                 )}
               </div>
-              <AssignmentSheet assignments={report?.assignments ?? []} />
+              <div className="p-3 sm:p-4">
+                <AssignmentSheet assignments={report?.assignments ?? []} />
+              </div>
             </div>
 
             {/* Workload Summary */}
-            <div className="bg-slate-900 rounded-xl border border-slate-800 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Users className="w-4 h-4 text-amber-500" />
-                <h3 className="text-sm font-semibold text-slate-200">Workload Distribution</h3>
+            <div className="panel">
+              <div
+                className="flex items-center gap-2 px-3 sm:px-4 py-3"
+                style={{ borderBottom: '1px solid var(--border-subtle)' }}
+              >
+                <Users size={14} style={{ color: 'var(--brass)' }} />
+                <span className="label-caps">Workload Distribution</span>
               </div>
-              <WorkloadSummary workload={report?.workload ?? []} />
+              <div className="p-3 sm:p-4">
+                <WorkloadSummary workload={report?.workload ?? []} />
+              </div>
             </div>
 
             {/* Shortfall Bucket */}
-            <div className="bg-slate-900 rounded-xl border border-slate-800 p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <AlertTriangle className="w-4 h-4 text-amber-500" />
-                <h3 className="text-sm font-semibold text-slate-200">Shortfall Bucket</h3>
+            <div className="panel">
+              <div
+                className="flex items-center gap-2 px-3 sm:px-4 py-3"
+                style={{ borderBottom: '1px solid var(--border-subtle)' }}
+              >
+                <AlertTriangle size={14} style={{ color: 'var(--accent-fail)' }} />
+                <span className="label-caps">Shortfall Bucket</span>
               </div>
-              <ShortfallBucket
-                shortfalls={report?.shortfalls ?? []}
-                totalShortfall={report?.total_shortfall ?? 0}
-              />
+              <div className="p-3 sm:p-4">
+                <ShortfallBucket
+                  shortfalls={report?.shortfalls ?? []}
+                  totalShortfall={report?.total_shortfall ?? 0}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -217,15 +294,19 @@ function StatCard({
   accent: string;
 }) {
   return (
-    <div className="bg-slate-900 rounded-xl border border-slate-800 p-3 flex flex-col gap-1">
-      <div className={`${accent} flex items-center gap-1.5`}>
-        {icon}
-        <span className="text-[10px] font-medium uppercase tracking-wider text-slate-500">
-          {label}
-        </span>
+    <div
+      className="panel p-3 flex flex-col gap-1.5"
+    >
+      <div className="flex items-center gap-1.5">
+        <span style={{ color: accent }}>{icon}</span>
+        <span className="label-caps" style={{ fontSize: 10 }}>{label}</span>
       </div>
-      <div className="text-xl font-bold text-slate-100 tabular-nums">{value}</div>
-      <div className="text-[10px] text-slate-500">{sub}</div>
+      <div className="font-display text-xl sm:text-2xl font-bold tabular-nums" style={{ color: 'var(--text-primary)' }}>
+        {value}
+      </div>
+      <div className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>
+        {sub}
+      </div>
     </div>
   );
 }
