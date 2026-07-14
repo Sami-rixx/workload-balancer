@@ -25,7 +25,7 @@ export interface Subject {
 
 export interface Teacher {
   teacher_id: string;
-  name: string;
+  teacher_name: string;
   max_periods_week: number;
   specialist?: boolean;
   confidence?: number;

@@ -66,7 +66,7 @@ function buildWorkingMaps(data: CanonicalPayload) {
   for (const teacher of data.teachers) {
     teacherCapacities.set(teacher.teacher_id, {
       teacher_id: teacher.teacher_id,
-      teacher_name: teacher.name,
+      teacher_name: teacher.teacher_name,
       max: Math.max(0, teacher.max_periods_week),
       remaining: Math.max(0, teacher.max_periods_week),
       specialist: teacher.specialist ?? false,
