@@ -1,4 +1,5 @@
 import type { ShortfallEntry } from '@/types/balancer';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface Props {
@@ -50,34 +51,36 @@ export default function ShortfallBucket({ shortfalls, totalShortfall }: Props) {
         </div>
       </div>
 
-      {/* Shortfall entries */}
-      <div className="flex flex-col gap-2">
-        {shortfalls.map((s, i) => (
-          <div
-            key={`${s.subject_code}-${s.grade}-${i}`}
-            className="panel-raised py-2.5 px-3 flex items-center justify-between fade-in-up"
-            style={{ animationDelay: `${Math.min(i * 50, 250)}ms` }}
-          >
-            <div className="flex items-center gap-3 min-w-0">
-              <span className="font-medium text-sm truncate" style={{ color: 'var(--text-primary)' }}>
-                {s.subject_name}
-              </span>
-              <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--text-muted)' }}>
-                {s.subject_code}
-              </span>
-              <span
-                className="font-mono text-xs px-1.5 py-0.5 rounded-sm flex-shrink-0"
-                style={{ background: 'var(--bg-surface)', color: 'var(--text-secondary)' }}
-              >
-                {s.grade}
+      {/* Shortfall entries with scrollable area */}
+      <ScrollArea className="max-h-[200px]">
+        <div className="flex flex-col gap-2">
+          {shortfalls.map((s, i) => (
+            <div
+              key={`${s.subject_code}-${s.grade}-${i}`}
+              className="panel-raised py-2.5 px-3 flex items-center justify-between fade-in-up"
+              style={{ animationDelay: `${Math.min(i * 50, 250)}ms` }}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="font-medium text-sm truncate" style={{ color: 'var(--text-primary)' }}>
+                  {s.subject_name}
+                </span>
+                <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--text-muted)' }}>
+                  {s.subject_code}
+                </span>
+                <span
+                  className="font-mono text-xs px-1.5 py-0.5 rounded-sm flex-shrink-0"
+                  style={{ background: 'var(--bg-surface)', color: 'var(--text-secondary)' }}
+                >
+                  {s.grade}
+                </span>
+              </div>
+              <span className="font-mono text-xs font-medium tabular-nums flex-shrink-0" style={{ color: 'var(--accent-fail)' }}>
+                {s.periods_unmet} periods
               </span>
             </div>
-            <span className="font-mono text-xs font-medium tabular-nums flex-shrink-0" style={{ color: 'var(--accent-fail)' }}>
-              {s.periods_unmet} periods
-            </span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 }
